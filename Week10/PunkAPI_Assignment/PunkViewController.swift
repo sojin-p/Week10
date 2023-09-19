@@ -12,9 +12,14 @@ class PunkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        PunkNetwork.shared.getBeers(type: Beer.self, api: .randomBeer)
-//        PunkNetwork.shared.getBeers(type: Beer.self, api: .beers)
-        PunkNetwork.shared.getBeers(type: Beer.self, api: .singleBeer)
+        PunkNetwork.shared.getBeers(type: Beer.self, api: .beers) { response in
+            switch response {
+            case .success(let success):
+                dump(success)
+            case .failure(let failure):
+                print(failure.errorMessage)
+            }
+        }
     }
 
 }
