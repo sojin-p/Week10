@@ -13,35 +13,9 @@ class PunkNetwork {
     static let shared = PunkNetwork()
     private init() { }
     
-    func getBeers() {
+    func getBeers<T: Decodable>(type: T.Type, api: PunkAPI) {
         
-        let api = PunkAPI.beers
-        
-        AF.request(api.endpoint, method: api.method).responseDecodable(of: Beer.self) { response in
-            switch response.result {
-            case .success(let data): dump(data)
-            case .failure(let error): print(error)
-            }
-        }
-    }
-    
-    func getSingleBeer() {
-        
-        let api = PunkAPI.singleBeer
-        
-        AF.request(api.endpoint, method: api.method).responseDecodable(of: Beer.self) { response in
-            switch response.result {
-            case .success(let data): dump(data)
-            case .failure(let error): print(error)
-            }
-        }
-    }
-    
-    func randomBeer() {
-        
-        let api = PunkAPI.randomBeer
-        
-        AF.request(api.endpoint, method: api.method).responseDecodable(of: Beer.self) { response in
+        AF.request(api.endpoint, method: api.method).responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let data): dump(data)
             case .failure(let error): print(error)
