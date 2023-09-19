@@ -18,10 +18,22 @@ class PunkNetwork {
         guard let url = URL(string: "https://api.punkapi.com/v2/beers") else { return }
         
         AF.request(url, method: .get).responseDecodable(of: Beer.self) { response in
-                switch response.result {
-                case .success(let data): dump(data)
-                case .failure(let error): print(error)
-                }
+            switch response.result {
+            case .success(let data): dump(data)
+            case .failure(let error): print(error)
             }
+        }
+    }
+    
+    func getSingleBeer() {
+        
+        guard let url = URL(string: "https://api.punkapi.com/v2/beers/1") else { return }
+        
+        AF.request(url, method: .get).responseDecodable(of: Beer.self) { response in
+            switch response.result {
+            case .success(let data): dump(data)
+            case .failure(let error): print(error)
+            }
+        }
     }
 }
