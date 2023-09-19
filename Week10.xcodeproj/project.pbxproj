@@ -17,6 +17,8 @@
 		2380FAF72AB9297A00B31754 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2380FAF62AB9297A00B31754 /* Alamofire */; };
 		2380FAFA2AB9298300B31754 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2380FAF92AB9298300B31754 /* Kingfisher */; };
 		2380FAFC2AB92D3500B31754 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2380FAFB2AB92D3500B31754 /* .gitignore */; };
+		2380FB002AB92D8500B31754 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FAFF2AB92D8500B31754 /* APIKey.swift */; };
+		2380FB032AB93CC200B31754 /* NetworkBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FB022AB93CC200B31754 /* NetworkBasic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		2380FAEA2AB9293E00B31754 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2380FAEC2AB9293E00B31754 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2380FAFB2AB92D3500B31754 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		2380FAFF2AB92D8500B31754 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		2380FB022AB93CC200B31754 /* NetworkBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBasic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 		2380FADD2AB9293C00B31754 /* Week10 */ = {
 			isa = PBXGroup;
 			children = (
+				2380FB012AB93CB700B31754 /* Network */,
 				2380FADE2AB9293C00B31754 /* AppDelegate.swift */,
 				2380FAE02AB9293C00B31754 /* SceneDelegate.swift */,
 				2380FAE22AB9293C00B31754 /* ViewController.swift */,
@@ -72,8 +77,17 @@
 				2380FAE92AB9293E00B31754 /* LaunchScreen.storyboard */,
 				2380FAEC2AB9293E00B31754 /* Info.plist */,
 				2380FAFB2AB92D3500B31754 /* .gitignore */,
+				2380FAFF2AB92D8500B31754 /* APIKey.swift */,
 			);
 			path = Week10;
+			sourceTree = "<group>";
+		};
+		2380FB012AB93CB700B31754 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				2380FB022AB93CC200B31754 /* NetworkBasic.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,8 +172,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2380FB032AB93CC200B31754 /* NetworkBasic.swift in Sources */,
 				2380FAE32AB9293C00B31754 /* ViewController.swift in Sources */,
 				2380FADF2AB9293C00B31754 /* AppDelegate.swift in Sources */,
+				2380FB002AB92D8500B31754 /* APIKey.swift in Sources */,
 				2380FAE12AB9293C00B31754 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
