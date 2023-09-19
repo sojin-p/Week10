@@ -15,9 +15,9 @@ class PunkNetwork {
     
     func getBeers() {
         
-        guard let url = URL(string: "https://api.punkapi.com/v2/beers") else { return }
+        let api = PunkAPI.beers
         
-        AF.request(url, method: .get).responseDecodable(of: Beer.self) { response in
+        AF.request(api.endpoint, method: api.method).responseDecodable(of: Beer.self) { response in
             switch response.result {
             case .success(let data): dump(data)
             case .failure(let error): print(error)
@@ -27,9 +27,9 @@ class PunkNetwork {
     
     func getSingleBeer() {
         
-        guard let url = URL(string: "https://api.punkapi.com/v2/beers/1") else { return }
+        let api = PunkAPI.singleBeer
         
-        AF.request(url, method: .get).responseDecodable(of: Beer.self) { response in
+        AF.request(api.endpoint, method: api.method).responseDecodable(of: Beer.self) { response in
             switch response.result {
             case .success(let data): dump(data)
             case .failure(let error): print(error)
@@ -39,9 +39,9 @@ class PunkNetwork {
     
     func randomBeer() {
         
-        guard let url = URL(string: "https://api.punkapi.com/v2/beers/random") else { return }
+        let api = PunkAPI.randomBeer
         
-        AF.request(url, method: .get).responseDecodable(of: Beer.self) { response in
+        AF.request(api.endpoint, method: api.method).responseDecodable(of: Beer.self) { response in
             switch response.result {
             case .success(let data): dump(data)
             case .failure(let error): print(error)

@@ -6,7 +6,29 @@
 //
 
 import Foundation
+import Alamofire
 
-class PunkAPI {
+enum PunkAPI {
+    case beers
+    case singleBeer
+    case randomBeer
     
+    private var baseURL: String {
+        return "https://api.punkapi.com/v2/beers/"
+    }
+    
+    var endpoint: URL {
+        switch self {
+        case .beers:
+            return URL(string: baseURL)!
+        case .singleBeer:
+            return URL(string: baseURL + "1")!
+        case .randomBeer:
+            return URL(string: baseURL + "random")!
+        }
+    }
+    
+    var method: HTTPMethod {
+        return .get
+    }
 }
