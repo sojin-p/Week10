@@ -12,24 +12,33 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Network.shared.callRequest(type: PhotoResult.self, api: .detailPhoto(id: "4RJlMZl5KJ4")) { response in
+            switch response {
+            case .success(let success):
+                dump(success)
+            case .failure(let failure):
+                print(failure.errorDescription)
+            }
+        }
+        
 //        NetworkBasic.shared.randomRequest { photo, error in
 //            guard let photo = photo else { return }
 //            guard let error = error else { return }
 //        }
         
         
-        NetworkBasic.shared.detailPhotoRequest(id: "QbF0TVjCqXs") { response in
-            switch response {
-            case .success(let success):
-                print(success) //배열에 담고 테이블 뷰 갱신
-            case .failure(let failure):
-                print(failure) //다시 시도해주세요 얼럿, 토스트
-            }
-        }
-        
-        NetworkBasic.shared.callRequest(query: "sky") { <#Result<Photo, Error>#> in
-            <#code#>
-        }
+//        NetworkBasic.shared.detailPhotoRequest(id: "QbF0TVjCqXs") { response in
+//            switch response {
+//            case .success(let success):
+//                print(success) //배열에 담고 테이블 뷰 갱신
+//            case .failure(let failure):
+//                print(failure) //다시 시도해주세요 얼럿, 토스트
+//            }
+//        }
+//
+//        NetworkBasic.shared.callRequest(query: "sky") { <#Result<Photo, Error>#> in
+//            <#code#>
+//        }
     }
 
 }

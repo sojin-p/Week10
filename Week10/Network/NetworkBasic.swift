@@ -37,9 +37,7 @@ final class NetworkBasic { //final: 상속할 필요가 없으니까, 이것을 
     static let shared = NetworkBasic()
     private init() { }
     
-    func callRequest(query: String, comletion: @escaping (Result<Photo, Error>) -> Void ) { // search photo
-        
-        let api = UnsplashAPI.search(query: query)
+    func callRequest(api: UnsplashAPI, query: String, comletion: @escaping (Result<Photo, SeSACError>) -> Void ) { // search photo
         
         AF.request(api.endpoint, method: api.method, parameters: api.query, encoding: URLEncoding(destination: .queryString), headers: api.header)
             .responseDecodable(of: Photo.self) { response in
@@ -54,30 +52,31 @@ final class NetworkBasic { //final: 상속할 필요가 없으니까, 이것을 
         
     } // search Photo
     
-    func randomRequest(completion: @escaping (Result<PhotoResult, Error>) -> Void ) {
-        
-        //1. 만든 구조(UnsplashAPI) 사용하기
-        let api = UnsplashAPI.random
+    func randomRequest(api: UnsplashAPI, completion: @escaping (Result<PhotoResult, SeSACError>) -> Void ) {
          
         AF.request(api.endpoint, method: api.method, headers: api.header)
             .responseDecodable(of: PhotoResult.self) { response in
                 switch response.result {
                 case .success(let data): completion(.success(data))
-                case .failure(let error): completion(.failure(error))
+                case .failure(_):
+                    let statusCode = response.response?.statusCode ?? 500
+                    guard let error = SeSACError(rawValue: statusCode) else { return }
+                    completion(.failure(error))
                 }
             }
         
     } //random
     
-    func detailPhotoRequest(id: String, completion: @escaping (Result<PhotoResult, Error>) -> Void ) { //QbF0TVjCqXs
-        
-        let api = UnsplashAPI.detailPhoto(id: id)
+    func detailPhotoRequest(id: String, api: UnsplashAPI, completion: @escaping (Result<PhotoResult, SeSACError>) -> Void ) { //QbF0TVjCqXs
         
         AF.request(api.endpoint, method: api.method, headers: api.header)
             .responseDecodable(of: PhotoResult.self) { response in
                 switch response.result {
                 case .success(let data): completion(.success(data))
-                case .failure(let error): completion(.failure(error))
+                case .failure(_):
+                    let statusCode = response.response?.statusCode ?? 500
+                    guard let error = SeSACError(rawValue: statusCode) else { return }
+                    completion(.failure(error))
                 }
             }
         
