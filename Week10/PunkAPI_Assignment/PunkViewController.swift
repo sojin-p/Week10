@@ -12,7 +12,7 @@ class PunkViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        PunkNetwork.shared.getSingleBeer()
+        PunkNetwork.shared.randomBeer()
     }
 
 }

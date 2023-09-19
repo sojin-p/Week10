@@ -36,4 +36,16 @@ class PunkNetwork {
             }
         }
     }
+    
+    func randomBeer() {
+        
+        guard let url = URL(string: "https://api.punkapi.com/v2/beers/random") else { return }
+        
+        AF.request(url, method: .get).responseDecodable(of: Beer.self) { response in
+            switch response.result {
+            case .success(let data): dump(data)
+            case .failure(let error): print(error)
+            }
+        }
+    }
 }
