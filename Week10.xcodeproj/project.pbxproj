@@ -19,6 +19,7 @@
 		2380FAFC2AB92D3500B31754 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 2380FAFB2AB92D3500B31754 /* .gitignore */; };
 		2380FB002AB92D8500B31754 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FAFF2AB92D8500B31754 /* APIKey.swift */; };
 		2380FB032AB93CC200B31754 /* NetworkBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FB022AB93CC200B31754 /* NetworkBasic.swift */; };
+		2380FB052AB9649D00B31754 /* UnsplashAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FB042AB9649D00B31754 /* UnsplashAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		2380FAFB2AB92D3500B31754 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		2380FAFF2AB92D8500B31754 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		2380FB022AB93CC200B31754 /* NetworkBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkBasic.swift; sourceTree = "<group>"; };
+		2380FB042AB9649D00B31754 /* UnsplashAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				2380FB022AB93CC200B31754 /* NetworkBasic.swift */,
+				2380FB042AB9649D00B31754 /* UnsplashAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 				2380FAE32AB9293C00B31754 /* ViewController.swift in Sources */,
 				2380FADF2AB9293C00B31754 /* AppDelegate.swift in Sources */,
 				2380FB002AB92D8500B31754 /* APIKey.swift in Sources */,
+				2380FB052AB9649D00B31754 /* UnsplashAPI.swift in Sources */,
 				2380FAE12AB9293C00B31754 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

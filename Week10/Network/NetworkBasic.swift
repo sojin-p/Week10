@@ -39,15 +39,10 @@ final class NetworkBasic { //final: 상속할 필요가 없으니까, 이것을 
     
     func callRequest(query: String, comletion: @escaping (Result<Photo, Error>) -> Void ) { // search photo
         
-        guard let url = URL(string: "https://api.unsplash.com/search/photos") else { return }
-        let headers: HTTPHeaders = ["Authorization": "Client-ID \(APIKey.unsplashKey)"]
-        let query: Parameters = ["query": query] //Get Query에는 제약이 있다(범주가 좁다). 자릿 수 등 - 강의자료 참고
+        let api = UnsplashAPI.search(query: query)
         
-        //Parmeters는 Body를 넣는 자리인데, url 길이 줄이려고 queryString을 넣어서 오류가 뜰 것임.
-        //encoding: 그래서 여기에 쿼리스트링이라고 설정값을 바꿔줘야 한다.
-        //링크를 엄청 여러개 사용하게 되면, 어떤게 바디인지 헤더인지 쿼리인지 리터럴하게 쓰면 보기 힘들어서 구조를 잡아가는 과정
-        
-        AF.request(url, method: .get, parameters: query, encoding: URLEncoding(destination: .queryString), headers: headers).responseDecodable(of: Photo.self) { response in
+        AF.request(api.endpoint, method: api.method, parameters: api.query, encoding: URLEncoding(destination: .queryString), headers: api.header)
+            .responseDecodable(of: Photo.self) { response in
                 switch response.result {
                 case .success(let data): comletion(.success(data))
                 case .failure(_):
@@ -61,10 +56,10 @@ final class NetworkBasic { //final: 상속할 필요가 없으니까, 이것을 
     
     func randomRequest(completion: @escaping (Result<PhotoResult, Error>) -> Void ) {
         
-        guard let url = URL(string: "https://api.unsplash.com/photos/random") else { return }
-        let headers: HTTPHeaders = ["Authorization": "Client-ID \(APIKey.unsplashKey)"]
-        
-        AF.request(url, method: .get, headers: headers).validate()
+        //1. 만든 구조(UnsplashAPI) 사용하기
+        let api = UnsplashAPI.random
+         
+        AF.request(api.endpoint, method: api.method, headers: api.header)
             .responseDecodable(of: PhotoResult.self) { response in
                 switch response.result {
                 case .success(let data): completion(.success(data))
@@ -76,10 +71,9 @@ final class NetworkBasic { //final: 상속할 필요가 없으니까, 이것을 
     
     func detailPhotoRequest(id: String, completion: @escaping (Result<PhotoResult, Error>) -> Void ) { //QbF0TVjCqXs
         
-        guard let url = URL(string: "https://api.unsplash.com/photos/\(id)") else { return }
-        let headers: HTTPHeaders = ["Authorization": "Client-ID \(APIKey.unsplashKey)"]
+        let api = UnsplashAPI.detailPhoto(id: id)
         
-        AF.request(url, method: .get, headers: headers).validate()
+        AF.request(api.endpoint, method: api.method, headers: api.header)
             .responseDecodable(of: PhotoResult.self) { response in
                 switch response.result {
                 case .success(let data): completion(.success(data))
