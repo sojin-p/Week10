@@ -29,6 +29,8 @@ class ViewController: UIViewController {
         view.isUserInteractionEnabled = true //제스처 받기
         return view
     }()
+    
+    let viewModel = ViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,22 +40,11 @@ class ViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureGesture()
-        request()
         
-    }
-    
-    func request() {
-        Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
-            switch response {
-            case .success(let success):
-                dump(success)
-                
-                self.imageView.kf.setImage(with: URL(string: success.urls.thumb)!)
-                
-            case .failure(let failure):
-                print(failure.errorDescription)
-            }
+        viewModel.request { url in
+            self.imageView.kf.setImage(with: url)
         }
+        
     }
     
     private func configureGesture() {
