@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Network.shared.callRequest(type: PhotoResult.self, api: .detailPhoto(id: "4RJlMZl5KJ4")) { response in
+        Network.shared.requestConvertible(type: PhotoResult.self, api: .random) { response in
             switch response {
             case .success(let success):
                 dump(success)
@@ -20,6 +20,15 @@ class ViewController: UIViewController {
                 print(failure.errorDescription)
             }
         }
+        
+//        Network.shared.callRequest(type: PhotoResult.self, api: .detailPhoto(id: "4RJlMZl5KJ4")) { response in
+//            switch response {
+//            case .success(let success):
+//                dump(success)
+//            case .failure(let failure):
+//                print(failure.errorDescription)
+//            }
+//        }
         
 //        NetworkBasic.shared.randomRequest { photo, error in
 //            guard let photo = photo else { return }
