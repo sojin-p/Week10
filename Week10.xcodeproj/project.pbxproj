@@ -32,6 +32,7 @@
 		2380FB422ABBE0FE00B31754 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FB412ABBE0FE00B31754 /* SearchCell.swift */; };
 		2380FB442ABC1E2C00B31754 /* PunkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FB432ABC1E2C00B31754 /* PunkViewModel.swift */; };
 		2380FB462ABD16A000B31754 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FB452ABD16A000B31754 /* Constant.swift */; };
+		23DD9A142AC2706200D6BBB5 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DD9A132AC2706200D6BBB5 /* Sample.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		2380FB412ABBE0FE00B31754 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		2380FB432ABC1E2C00B31754 /* PunkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PunkViewModel.swift; sourceTree = "<group>"; };
 		2380FB452ABD16A000B31754 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		23DD9A132AC2706200D6BBB5 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				2380FAE92AB9293E00B31754 /* LaunchScreen.storyboard */,
 				2380FAEC2AB9293E00B31754 /* Info.plist */,
 				2380FAFB2AB92D3500B31754 /* .gitignore */,
+				23DD9A132AC2706200D6BBB5 /* Sample.swift */,
 			);
 			path = Week10;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				2380FADF2AB9293C00B31754 /* AppDelegate.swift in Sources */,
 				2380FB002AB92D8500B31754 /* APIKey.swift in Sources */,
 				2380FB052AB9649D00B31754 /* UnsplashAPI.swift in Sources */,
+				23DD9A142AC2706200D6BBB5 /* Sample.swift in Sources */,
 				2380FB3E2ABBCB3C00B31754 /* SearchViewController.swift in Sources */,
 				2380FB462ABD16A000B31754 /* Constant.swift in Sources */,
 				2380FB072AB9743B00B31754 /* Network.swift in Sources */,

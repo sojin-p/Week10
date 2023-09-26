@@ -7,15 +7,17 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UISearchBarDelegate {
 
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
+    var collectionView = UICollectionView(frame: .zero, collectionViewLayout: tagLayout())
     
     //디퍼블은 클래스기준
-    var dataSource: UICollectionViewDiffableDataSource<Int, Int>! //선언. 초기화는 펑션으로!
+    var dataSource: UICollectionViewDiffableDataSource<Int, PhotoResult>! //선언. 초기화는 펑션으로!
 
-    let list = Array(0...100)
+//    let list = Array(0...100)
+    let list = ["안녕", "여러글자", "어디까지길어지는거에요", "밥", "뭐먹지", "버거킹에 트러플 머쉬룸 버거가 재출시 되었다는데....", "스팸구워먹어야지"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +26,33 @@ class SearchViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureDataSource()
+        
+        let searchBar = UISearchBar()
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
 
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Network.shared.requestConvertible(type: Photo.self, api: .search(query: searchBar.text!)) { response in
+            switch response {
+            case .success(let success):
+                //데이터 + UI갱신(스냅샷)
+                self.collectionView.collectionViewLayout = self.pinterestLayout()
+                self.configureSnapshot(success)
+                dump(success)
+            case .failure(let failure):
+                //alert
+                print(failure.localizedDescription)
+            }
+        }
+    }
+    
+    func configureSnapshot(_ item: Photo) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, PhotoResult>()
+        snapshot.appendSections([0]) //섹션 몇 개, 그 섹션의 이름이 뭐야?
+        snapshot.appendItems(item.results) //어떤 데이터를 넣을거야?
+        dataSource.apply(snapshot) //갱신
     }
 
     func configureHierarchy() {
@@ -42,9 +70,10 @@ class SearchViewController: UIViewController {
     func configureDataSource() {
         
         //4.
-        let cellRegistration = UICollectionView.CellRegistration<SearchCell, Int> { cell, indexPath, itemIdentifier in
-            cell.imageView.image = UIImage(systemName: "star.fill")
-            cell.label.text = "\(itemIdentifier)번"
+        let cellRegistration = UICollectionView.CellRegistration<SearchCell, PhotoResult> { cell, indexPath, itemIdentifier in
+            let url = URL(string: itemIdentifier.urls.thumb)
+            cell.imageView.kf.setImage(with: url)
+            cell.label.text = "\(itemIdentifier.created_at)번"
         }
     
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
@@ -52,38 +81,88 @@ class SearchViewController: UIViewController {
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         })
         
-        var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
-        snapshot.appendSections([0]) //섹션 몇 개, 그 섹션의 이름이 뭐야?
-        snapshot.appendItems(list) //어떤 데이터를 넣을거야?
-        dataSource.apply(snapshot) //갱신
-        
     }
     
-    func layout() -> UICollectionViewLayout { //플로우 레이아웃, 컴포지셔널 레이아웃이 UICollectionViewLayout를 갖고있다.
+    func pinterestLayout() -> UICollectionViewLayout {
         
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), //4분의 1 사이즈로 넣을거라
-                                              heightDimension: .fractionalHeight(1.0)) //0~1사이의 값 1.0은 꽉 차게. 즉, 그룹이 80이라서 그룹에 꽉차게 들어가서 80으로 잡힌다.
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/2),
+                                              heightDimension: .estimated(150))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), //fractional: 컬렉션 뷰 크기에 상대적인 비율, 1.0 -> 꽉 차게!
-                                               heightDimension: .absolute(80)) //absolute: 리터럴한 값
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .estimated(150))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        repeatingSubitem: item,
-                                                       count: 4) //horizontal: 수평으로 Item이 붙는 것 / 컬렉션뷰 스크롤과는 관계없음
+                                                       count: 2)
         group.interItemSpacing = .fixed(10) //사이사이 inset
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10) //inset
-        section.interGroupSpacing = 20 //섹션마다 inset
+        section.interGroupSpacing = 10 //섹션마다 inset
         
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
-        configuration.scrollDirection = .horizontal //컬렉션 뷰를 수평 스크롤로 바꾸기
+        configuration.scrollDirection = .vertical //컬렉션 뷰 스크롤 설정
         layout.configuration = configuration
         
         return layout
     }
+    
+//------------------------------------------------------------------------
+    
+    static func tagLayout() -> UICollectionViewLayout {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(80),
+                                              heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(80),
+                                               heightDimension: .absolute(30))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                       subitems: [item])
+        group.interItemSpacing = .fixed(10) //사이사이 inset
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10) //inset
+        section.interGroupSpacing = 10 //섹션마다 inset
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.scrollDirection = .vertical //컬렉션 뷰 스크롤 설정
+        layout.configuration = configuration
+        
+        return layout
+    }
+    
+//------------------------------------------------------------------------
+    
+//    func layout() -> UICollectionViewLayout { //플로우 레이아웃, 컴포지셔널 레이아웃이 UICollectionViewLayout를 갖고있다.
+//
+//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), //4분의 1 사이즈로 넣을거라
+//                                              heightDimension: .fractionalHeight(1.0)) //0~1사이의 값 1.0은 꽉 차게. 즉, 그룹이 80이라서 그룹에 꽉차게 들어가서 80으로 잡힌다.
+//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//
+//        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), //fractional: 컬렉션 뷰 크기에 상대적인 비율, 1.0 -> 꽉 차게!
+//                                               heightDimension: .absolute(80)) //absolute: 절대적인 값
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+//                                                       repeatingSubitem: item,
+//                                                       count: 4) //horizontal: 수평으로 Item이 붙는 것 / 컬렉션뷰 스크롤과는 관계없음
+//        group.interItemSpacing = .fixed(10) //사이사이 inset
+//
+//        let section = NSCollectionLayoutSection(group: group)
+//        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10) //inset
+//        section.interGroupSpacing = 20 //섹션마다 inset
+//
+//        let layout = UICollectionViewCompositionalLayout(section: section)
+//
+//        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+//        configuration.scrollDirection = .horizontal //컬렉션 뷰를 수평 스크롤로 바꾸기
+//        layout.configuration = configuration
+//
+//        return layout
+//    }
 
 //    func layout() -> UICollectionViewLayout {
 //        let layout = UICollectionViewFlowLayout()
