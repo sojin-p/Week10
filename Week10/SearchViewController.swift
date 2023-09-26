@@ -38,8 +38,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
             switch response {
             case .success(let success):
                 //데이터 + UI갱신(스냅샷)
-                self.collectionView.collectionViewLayout = self.pinterestLayout()
+                
+                let ratios = success.results.map { Ratio(ratio: $0.width / $0.height) } //item 각각의 비율
+                let layout = PinterestLayout(columnsCount: 3, itemRatios: ratios, spacing: 8, contentWidth: self.view.frame.width)
+                
+                self.collectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: layout.section) //스냅샷 이전에!
                 self.configureSnapshot(success)
+                self.collectionView.scrollsToTop = true
                 dump(success)
             case .failure(let failure):
                 //alert
