@@ -58,13 +58,39 @@ class SearchViewController: UIViewController {
         dataSource.apply(snapshot) //갱신
         
     }
-
-    func layout() -> UICollectionViewLayout {
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 50, height: 50)
-        layout.scrollDirection = .vertical
+    
+    func layout() -> UICollectionViewLayout { //플로우 레이아웃, 컴포지셔널 레이아웃이 UICollectionViewLayout를 갖고있다.
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), //4분의 1 사이즈로 넣을거라
+                                              heightDimension: .fractionalHeight(1.0)) //0~1사이의 값 1.0은 꽉 차게. 즉, 그룹이 80이라서 그룹에 꽉차게 들어가서 80으로 잡힌다.
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), //fractional: 컬렉션 뷰 크기에 상대적인 비율, 1.0 -> 꽉 차게!
+                                               heightDimension: .absolute(80)) //absolute: 리터럴한 값
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                       repeatingSubitem: item,
+                                                       count: 4) //horizontal: 수평으로 Item이 붙는 것 / 컬렉션뷰 스크롤과는 관계없음
+        group.interItemSpacing = .fixed(10) //사이사이 inset
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10) //inset
+        section.interGroupSpacing = 20 //섹션마다 inset
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.scrollDirection = .horizontal //컬렉션 뷰를 수평 스크롤로 바꾸기
+        layout.configuration = configuration
+        
         return layout
     }
+
+//    func layout() -> UICollectionViewLayout {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.itemSize = CGSize(width: 50, height: 50)
+//        layout.scrollDirection = .vertical
+//        return layout
+//    }
 
 }
 
